@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html ng-app="quizApp">
+<head>
+    <title>Quiz</title>
+    <script src="libraries/angular.js"></script>
+    <script src="model.js"></script>
+
+    <script>
+    	console.log(model);
+        var quizApp = angular.module("quizApp", []);
+
+		quizApp.controller("quizCtrl", function ($scope) {
+			$scope.data = model;
+
+			$scope.currentQuestion = 0;
+			
+			$scope.rating = 0;
+
+			$scope.tempRating = 0;
+
+			$scope.nextQuestion = function () {
+				$scope.currentQuestion++;
+				$scope.rating += parseInt($scope.tempRating);
+			}
+		});
+    </script>
+
+    <link href="libraries/bootstrap.css" rel="stylesheet"/>
+    <link href="libraries/bootstrap-theme.css" rel="stylesheet"/>
+</head>
+<body ng-controller="quizCtrl">
+
+	<div class="container">
+		<h1>Quiz</h1>
+		<h2 ng-if="currentQuestion < data.length">{{currentQuestion + 1}} из {{data.length}}</h2>
+	</div>
+	<div class="container">
+		<div ng-repeat="question in data" class="row well" ng-if="currentQuestion == $index">
+			<h3 class="panel-heading">{{question.title}}</h3>
+			<div class="col-sm-12 " style="width: 90%; margin: 2% 5%;">
+				<div ng-repeat="answer in question.answers">
+					<label>
+						<input type="radio" ng-model="$parent.$parent.$parent.tempRating" ng-value="answer.rate" name="radio{{$parent.$index}}" required> {{answer.title}}
+					</label>
+				</div>
+				<hr>
+				<input type="button" class="btn btn-success" ng-click="nextQuestion()" value="Сделующий вопрос">
+			</div>
+		</div>
+
+		<div class="result" ng-if="currentQuestion > data.length - 1">
+			<h4>Результат {{rating / data.length}}</h4>
+		</div>
+	</div>
+</body>
+</html>
