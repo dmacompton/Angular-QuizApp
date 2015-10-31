@@ -1,12 +1,11 @@
 ﻿<!DOCTYPE html>
 <html ng-app="quizApp">
 <head>
-    <title>Quiz</title>
+    <title>Викторина</title>
     <script src="libraries/angular.js"></script>
     <script src="model.js"></script>
 
     <script>
-    	console.log(model);
         var quizApp = angular.module("quizApp", []);
 
 		quizApp.controller("quizCtrl", function ($scope) {
@@ -19,8 +18,11 @@
 			$scope.tempRating = 0;
 
 			$scope.nextQuestion = function () {
-				$scope.currentQuestion++;
-				$scope.rating += parseInt($scope.tempRating);
+				if ($scope.tempRating) {
+					$scope.currentQuestion++;
+					$scope.rating += parseInt($scope.tempRating);
+					$scope.tempRating = 0;
+				}
 			}
 		});
     </script>
@@ -31,7 +33,7 @@
 <body ng-controller="quizCtrl">
 
 	<div class="container">
-		<h1>Quiz</h1>
+		<h1>Викторина</h1>
 		<h2 ng-if="currentQuestion < data.length">{{currentQuestion + 1}} из {{data.length}}</h2>
 	</div>
 	<div class="container">
